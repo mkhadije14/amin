@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0F4C3A">
+<title>أمين</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+
+<!-- كلمة الترحيب -->
+<section id="welcome" class="screen welcome" hidden>
+  <img class="avatar big" src="img/pere.jpg" alt="صورة أبي">
+  <p class="verse">﴿ وَقُل رَّبِّ ارْحَمْهُمَا كَمَا رَبَّيَانِي صَغِيرًا ﴾</p>
+  <p class="verse-ref">سورة الإسراء · الآية 24</p>
+  <div class="rule" aria-hidden="true"></div>
+  <div class="message-box">
+    <h2>إلى أبي الحبيب ❤️</h2>
+    <p id="message" class="message"></p>
+  </div>
+  <a class="btn gold" href="#home">ادخل</a>
+</section>
+
+<!-- الرئيسية -->
+<section id="home" class="screen" hidden>
+  <header class="home-head">
+    <img class="avatar" src="img/pere.jpg" alt="">
+    <h1>أمين</h1>
+    <p>أذكار وأدعية</p>
+  </header>
+  <nav class="menu" aria-label="الأقسام">
+    <a href="#sabah"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg><span>أذكار الصباح والمساء</span></a>
+    <a href="#adiya"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6c-2-1.5-5-2-8-1.5v14c3-.5 6 0 8 1.5 2-1.5 5-2 8-1.5v-14c-3-.5-6 0-8 1.5Z"/><path d="M12 6v14"/></svg><span>أدعية صحت عن النبي <span class="saw">ﷺ</span></span></a>
+    <a href="#khassa"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.4a4.3 4.3 0 0 1 7.5 2.4C19.5 15.4 12 20 12 20Z"/></svg><span>أذكاري الخاصة</span></a>
+  </nav>
+  <a class="link" href="#welcome">كلمة لك يا أبي</a>
+</section>
+
+<!-- قوائم الأذكار والأدعية -->
+<section id="list" class="screen" hidden>
+  <header class="bar">
+    <div class="bar-row">
+      <a class="icon-btn" href="#home" aria-label="رجوع"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a>
+      <div class="sizes">
+        <button type="button" class="icon-btn" data-size="-1" aria-label="تصغير الخط">أ-</button>
+        <button type="button" class="icon-btn" data-size="1" aria-label="تكبير الخط">أ+</button>
+      </div>
+    </div>
+    <h1 id="list-title"></h1>
+    <p class="sub">من كتاب تحفة الذاكرين</p>
+  </header>
+  <main id="list-items" class="items"></main>
+</section>
+
+<!-- أذكاري الخاصة -->
+<section id="khassa" class="screen" hidden>
+  <header class="bar">
+    <div class="bar-row">
+      <a class="icon-btn" href="#home" aria-label="رجوع"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a>
+      <h1>أذكاري الخاصة</h1>
+      <button type="button" class="icon-btn" id="zoom" aria-label="تكبير الصورة"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21M8 10.5h5M10.5 8v5"/></svg></button>
+    </div>
+  </header>
+  <div class="viewer" id="viewer"><img id="page-img" alt=""></div>
+  <footer class="pager">
+    <p id="page-num"></p>
+    <div class="pager-row">
+      <button type="button" class="btn" id="next">التالية</button>
+      <button type="button" class="btn outline" id="prev">السابقة</button>
+    </div>
+  </footer>
+</section>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
