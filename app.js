@@ -47,15 +47,51 @@
     salawat: { title: 'صلوات على النبي صلى الله عليه وسلم من مخ الدعاء', sub: 'من كتاب مخ الدعاء', items: D.salawat }
   };
 
+  // المفضلة: تُحفظ في الهاتف بمفتاح من اسم القسم وبداية النص
+  var favs = load('favs', []);
+  function favKey(listKey, item) { return listKey + ':' + item.t.slice(0, 60); }
+  function isFav(k) { return favs.indexOf(k) !== -1; }
+  function toggleFav(k) {
+    if (isFav(k)) favs.splice(favs.indexOf(k), 1); else favs.push(k);
+    save('favs', favs);
+    updateFavCount();
+  }
+  function updateFavCount() { $('fav-count').textContent = favs.length ? '(' + favs.length + ')' : ''; }
+  function favEntries() {
+    var out = [];
+    favs.forEach(function (k) {
+      var listKey = k.split(':')[0];
+      var list = LISTS[listKey];
+      if (!list) return;
+      list.items.forEach(function (item) {
+        if (favKey(listKey, item) === k) out.push({ item: item, listKey: listKey });
+      });
+    });
+    return out;
+  }
+  updateFavCount();
+
   function renderList(key) {
-    var list = LISTS[key];
+    var isFavList = key === 'fav';
+    var list = isFavList
+      ? { title: 'المفضلة', sub: 'ما اخترته من الأقسام', entries: favEntries() }
+      : LISTS[key];
+    var entries = list.entries || list.items.map(function (item) { return { item: item, listKey: key }; });
     $('list-title').textContent = list.title;
     $('list-sub').textContent = list.sub || 'من كتاب تحفة الذاكرين';
     var box = $('list-items');
     box.textContent = '';
+    if (isFavList && !entries.length) {
+      var empty = document.createElement('p');
+      empty.className = 'empty';
+      empty.textContent = 'لا يوجد شيء في المفضلة بعد. اضغط على النجمة ☆ بجانب أي ذكر أو دعاء لإضافته هنا.';
+      box.appendChild(empty);
+      return;
+    }
+    var items = entries.map(function (e) { return e.item; });
     // فهرس الأقسام الفرعية إن وجدت
-    var groups = list.items.filter(function (item) { return item.g; });
-    if (groups.length) {
+    var groups = items.filter(function (item) { return item.g; });
+    if (groups.length && !isFavList) {
       var nav = document.createElement('nav');
       nav.className = 'chips';
       groups.forEach(function (item, gi) {
@@ -71,8 +107,9 @@
       box.appendChild(nav);
     }
     var groupIndex = 0;
-    list.items.forEach(function (item, i) {
-      if (item.g) {
+    entries.forEach(function (entry, i) {
+      var item = entry.item;
+      if (item.g && !isFavList) {
         var gh = document.createElement('h2');
         gh.className = 'group-title';
         gh.id = 'group-' + groupIndex++;
@@ -123,7 +160,33 @@
         show();
         foot.appendChild(btn);
       }
-      card.appendChild(num);
+      var top = document.createElement('div');
+      top.className = 'card-top';
+      top.appendChild(num);
+      if (isFavList) {
+        var from = document.createElement('span');
+        from.className = 'from';
+        from.textContent = LISTS[entry.listKey].title;
+        top.appendChild(from);
+      }
+      var k = favKey(entry.listKey, item);
+      var star = document.createElement('button');
+      star.type = 'button';
+      star.className = 'star';
+      var paintStar = function () {
+        var on = isFav(k);
+        star.textContent = on ? '★' : '☆';
+        star.classList.toggle('on', on);
+        star.setAttribute('aria-label', on ? 'إزالة من المفضلة' : 'إضافة إلى المفضلة');
+      };
+      star.addEventListener('click', function () {
+        toggleFav(k);
+        if (isFavList) { renderList('fav'); return; }
+        paintStar();
+      });
+      paintStar();
+      top.appendChild(star);
+      card.appendChild(top);
       // عنوان الدعاء وما قبله وما بعده من كلام الكتاب
       [['h', 'card-title'], ['n', 'note']].forEach(function (k) {
         if (!item[k[0]]) return;
@@ -165,7 +228,7 @@
     var h = location.hash.replace('#', '');
     if (!h) h = load('seenWelcome', false) ? 'home' : 'welcome';
     document.querySelectorAll('.screen').forEach(function (s) { s.hidden = true; });
-    if (LISTS[h]) {
+    if (LISTS[h] || h === 'fav') {
       renderList(h);
       $('list').hidden = false;
     } else if (h === 'khassa') {
