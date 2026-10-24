@@ -116,3 +116,4 @@ svg { width: 30px; height: 30px; fill: none; stroke: currentColor; stroke-width:
   :root:not([data-theme="light"]) .viewer { background: #0A1612; }
 }
 :root[data-theme="dark"] { --ground: #0E1D18; --card: #16302A; --line: #2A4A40; --ink: #EAF2EE; --muted: #A9BDB5; }
+.tag { font-family: 'Tajawal', sans-serif; font-size: .62em; color: var(--muted); unicode-bidi: isolate; }

@@ -27,7 +27,9 @@
   // القوائم
   var LISTS = {
     sabah: { title: 'أذكار الصباح والمساء', items: D.sabahMasa },
-    adiya: { title: 'أدعية صحت عن النبي صلى الله عليه وسلم', items: D.adiya }
+    adiya: { title: 'أدعية صحت عن النبي صلى الله عليه وسلم', items: D.adiya },
+    karb: { title: 'أدعية الكرب', items: D.karb },
+    salat: { title: 'الصلاة على النبي صلى الله عليه وسلم', items: D.salat }
   };
 
   function renderList(key) {
@@ -43,7 +45,18 @@
       num.textContent = i + 1;
       var text = document.createElement('p');
       text.className = 'text';
-      text.textContent = item.t;
+      // رموز المصادر داخل النص بخط الواجهة حتى تظهر الأقواس صحيحة
+      item.t.split(/(\([^)]*\))/).forEach(function (part) {
+        if (!part) return;
+        if (part.charAt(0) === '(') {
+          var tag = document.createElement('span');
+          tag.className = 'tag';
+          tag.textContent = part;
+          text.appendChild(tag);
+        } else {
+          text.appendChild(document.createTextNode(part));
+        }
+      });
       var foot = document.createElement('div');
       foot.className = 'foot';
       var src = document.createElement('span');
@@ -97,7 +110,7 @@
     var h = location.hash.replace('#', '');
     if (!h) h = load('seenWelcome', false) ? 'home' : 'welcome';
     document.querySelectorAll('.screen').forEach(function (s) { s.hidden = true; });
-    if (h === 'sabah' || h === 'adiya') {
+    if (LISTS[h]) {
       renderList(h);
       $('list').hidden = false;
     } else if (h === 'khassa') {
