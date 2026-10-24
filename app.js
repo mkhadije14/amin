@@ -13,16 +13,29 @@
   $('message').textContent = D.message;
 
   // حجم الخط
-  var size = load('size', 24);
+  var MIN = 20, MAX = 60;
+  var size = load('textSize', 30);
   function applySize() { document.documentElement.style.setProperty('--text-size', size + 'px'); }
+  function setSize(v) { size = Math.round(Math.max(MIN, Math.min(MAX, v))); applySize(); save('textSize', size); }
   applySize();
   document.querySelectorAll('[data-size]').forEach(function (b) {
-    b.addEventListener('click', function () {
-      size = Math.max(18, Math.min(44, size + 3 * Number(b.dataset.size)));
-      save('size', size);
-      applySize();
-    });
+    b.addEventListener('click', function () { setSize(size + 4 * Number(b.dataset.size)); });
   });
+
+  // تكبير النص وتصغيره بإصبعين
+  var pinchStart = 0, pinchSize = size;
+  function gap(t) { return Math.hypot(t[0].clientX - t[1].clientX, t[0].clientY - t[1].clientY); }
+  var listBox = $('list-items');
+  listBox.addEventListener('touchstart', function (e) {
+    if (e.touches.length === 2) { pinchStart = gap(e.touches); pinchSize = size; }
+  }, { passive: true });
+  listBox.addEventListener('touchmove', function (e) {
+    if (e.touches.length === 2 && pinchStart) {
+      e.preventDefault();
+      setSize(pinchSize * gap(e.touches) / pinchStart);
+    }
+  }, { passive: false });
+  listBox.addEventListener('touchend', function (e) { if (e.touches.length < 2) pinchStart = 0; });
 
   // القوائم
   var LISTS = {
