@@ -246,6 +246,13 @@
   route();
 
   if ('serviceWorker' in navigator) {
-    window.addEventListener('load', function () { navigator.serviceWorker.register('sw.js'); });
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('sw.js', { updateViaCache: 'none' }).then(function (reg) { reg.update(); });
+    });
+    // عند وصول نسخة جديدة نعيد تحميل الصفحة مرة واحدة
+    var hadController = !!navigator.serviceWorker.controller, reloaded = false;
+    navigator.serviceWorker.addEventListener('controllerchange', function () {
+      if (hadController && !reloaded) { reloaded = true; location.reload(); }
+    });
   }
 })();

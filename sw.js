@@ -1,5 +1,5 @@
 // Change VERSION on every update so the phone downloads the new files.
-var VERSION = 'amin-v7';
+var VERSION = 'amin-v8';
 var FILES = [
   './', 'index.html', 'app.css', 'app.js', 'data.js', 'manifest.webmanifest',
   'img/pere.jpg', 'icons/icon-192.png', 'icons/icon-512.png', 'icons/maskable-512.png', 'icons/apple-touch-icon.png',
@@ -9,7 +9,10 @@ var FILES = [
 for (var i = 1; i <= 15; i++) FILES.push('pages/page-' + String(i).padStart(2, '0') + '.jpg');
 
 self.addEventListener('install', function (e) {
-  e.waitUntil(caches.open(VERSION).then(function (c) { return c.addAll(FILES); }).then(function () { return self.skipWaiting(); }));
+  // cache: 'reload' تجاوز ذاكرة المتصفح حتى نحصل دائمًا على أحدث نسخة
+  e.waitUntil(caches.open(VERSION).then(function (c) {
+    return c.addAll(FILES.map(function (f) { return new Request(f, { cache: 'reload' }); }));
+  }).then(function () { return self.skipWaiting(); }));
 });
 
 self.addEventListener('activate', function (e) {
@@ -20,6 +23,19 @@ self.addEventListener('activate', function (e) {
 
 self.addEventListener('fetch', function (e) {
   if (e.request.method !== 'GET') return;
+  // الصفحات والنصوص: من الشبكة أولًا ثم من الذاكرة دون إنترنت؛ الصور والخطوط من الذاكرة أولًا
+  var url = new URL(e.request.url);
+  var fresh = e.request.mode === 'navigate' || /\.(html|js|css|webmanifest)$/.test(url.pathname);
+  if (fresh) {
+    e.respondWith(fetch(e.request, { cache: 'no-cache' }).then(function (res) {
+      var copy = res.clone();
+      if (res.ok) caches.open(VERSION).then(function (c) { c.put(e.request, copy); });
+      return res;
+    }).catch(function () {
+      return caches.match(e.request, { ignoreSearch: true });
+    }));
+    return;
+  }
   e.respondWith(caches.match(e.request, { ignoreSearch: true }).then(function (hit) {
     return hit || fetch(e.request);
   }));
