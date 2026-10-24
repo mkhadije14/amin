@@ -29,12 +29,14 @@
     sabah: { title: 'أذكار الصباح والمساء', items: D.sabahMasa },
     adiya: { title: 'أدعية صحت عن النبي صلى الله عليه وسلم', items: D.adiya },
     karb: { title: 'أدعية الكرب', items: D.karb },
-    salat: { title: 'الصلاة على النبي صلى الله عليه وسلم', items: D.salat }
+    salat: { title: 'الصلاة على النبي صلى الله عليه وسلم', items: D.salat },
+    mukh: { title: 'أدعية من مخ الدعاء', sub: 'من كتاب مخ الدعاء', items: D.mukh }
   };
 
   function renderList(key) {
     var list = LISTS[key];
     $('list-title').textContent = list.title;
+    $('list-sub').textContent = list.sub || 'من كتاب تحفة الذاكرين';
     var box = $('list-items');
     box.textContent = '';
     list.items.forEach(function (item, i) {
@@ -83,7 +85,21 @@
         foot.appendChild(btn);
       }
       card.appendChild(num);
+      // عنوان الدعاء وما قبله وما بعده من كلام الكتاب
+      [['h', 'card-title'], ['n', 'note']].forEach(function (k) {
+        if (!item[k[0]]) return;
+        var el = document.createElement(k[0] === 'h' ? 'h2' : 'p');
+        el.className = k[1];
+        el.textContent = item[k[0]];
+        card.appendChild(el);
+      });
       card.appendChild(text);
+      if (item.a) {
+        var after = document.createElement('p');
+        after.className = 'note';
+        after.textContent = item.a;
+        card.appendChild(after);
+      }
       card.appendChild(foot);
       box.appendChild(card);
     });

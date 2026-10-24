@@ -117,3 +117,8 @@ svg { width: 30px; height: 30px; fill: none; stroke: currentColor; stroke-width:
 }
 :root[data-theme="dark"] { --ground: #0E1D18; --card: #16302A; --line: #2A4A40; --ink: #EAF2EE; --muted: #A9BDB5; }
 .tag { font-family: 'Tajawal', sans-serif; font-size: .62em; color: var(--muted); unicode-bidi: isolate; }
+.text { white-space: pre-line; }
+.card-title { margin: 0; font-family: 'Amiri', serif; font-size: calc(var(--text-size) * .9); line-height: 1.6; color: var(--green); text-align: center; }
+.note { margin: 0; font-size: 17px; line-height: 1.8; color: var(--muted); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .card-title { color: #D9C48F; } }
+:root[data-theme="dark"] .card-title { color: #D9C48F; }
