@@ -44,7 +44,7 @@
     karb: { title: 'أدعية الكرب', items: D.karb },
     salat: { title: 'الصلاة على النبي صلى الله عليه وسلم', items: D.salat },
     mukh: { title: 'أدعية من مخ الدعاء', sub: 'من كتاب مخ الدعاء', items: D.mukh },
-    salawat: { title: 'صلوات على النبي صلى الله عليه وسلم', sub: 'من كتاب مخ الدعاء', items: D.salawat }
+    salawat: { title: 'صلوات على النبي صلى الله عليه وسلم من مخ الدعاء', sub: 'من كتاب مخ الدعاء', items: D.salawat }
   };
 
   function renderList(key) {
