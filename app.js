@@ -40,7 +40,32 @@
     $('list-sub').textContent = list.sub || 'من كتاب تحفة الذاكرين';
     var box = $('list-items');
     box.textContent = '';
+    // فهرس الأقسام الفرعية إن وجدت
+    var groups = list.items.filter(function (item) { return item.g; });
+    if (groups.length) {
+      var nav = document.createElement('nav');
+      nav.className = 'chips';
+      groups.forEach(function (item, gi) {
+        var chip = document.createElement('button');
+        chip.type = 'button';
+        chip.textContent = item.g;
+        chip.addEventListener('click', function () {
+          var target = document.getElementById('group-' + gi);
+          if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+        nav.appendChild(chip);
+      });
+      box.appendChild(nav);
+    }
+    var groupIndex = 0;
     list.items.forEach(function (item, i) {
+      if (item.g) {
+        var gh = document.createElement('h2');
+        gh.className = 'group-title';
+        gh.id = 'group-' + groupIndex++;
+        gh.textContent = item.g;
+        box.appendChild(gh);
+      }
       var card = document.createElement('article');
       card.className = 'card';
       var num = document.createElement('span');
