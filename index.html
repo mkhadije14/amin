@@ -34,6 +34,7 @@
     <p>أذكار وأدعية</p>
   </header>
   <nav class="menu" aria-label="الأقسام">
+    <a href="#misbaha"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="4.5" r="1.6"/><circle cx="17.3" cy="6.7" r="1.6"/><circle cx="19.5" cy="12" r="1.6"/><circle cx="17.3" cy="17.3" r="1.6"/><circle cx="6.7" cy="6.7" r="1.6"/><circle cx="4.5" cy="12" r="1.6"/><circle cx="6.7" cy="17.3" r="1.6"/><path d="M12 19.5v2.5M10.5 22h3"/></svg><span>المسبحة</span></a>
     <a href="#fav" class="fav-link"><span class="fav-icon" aria-hidden="true">★</span><span>المفضلة <span id="fav-count" class="count"></span></span></a>
     <a href="#sabah"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg><span>أذكار الصباح والمساء</span></a>
     <a href="#adiya"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6c-2-1.5-5-2-8-1.5v14c3-.5 6 0 8 1.5 2-1.5 5-2 8-1.5v-14c-3-.5-6 0-8 1.5Z"/><path d="M12 6v14"/></svg><span>أدعية صحت عن النبي <span class="saw">ﷺ</span></span></a>
@@ -79,6 +80,27 @@
       <button type="button" class="btn outline" id="prev">السابقة</button>
     </div>
   </footer>
+</section>
+
+<!-- المسبحة -->
+<section id="misbaha" class="screen" hidden>
+  <header class="bar">
+    <div class="bar-row">
+      <a class="icon-btn" href="#home" aria-label="رجوع"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a>
+      <h1>المسبحة</h1>
+      <span class="icon-btn ghost" aria-hidden="true"></span>
+    </div>
+  </header>
+  <main class="misbaha">
+    <div class="phrases" id="phrases" role="group" aria-label="الذكر"></div>
+    <div class="targets" id="targets" role="group" aria-label="العدد"></div>
+    <button type="button" class="bead" id="bead" aria-live="polite">
+      <span class="bead-count" id="bead-count">0</span>
+      <span class="bead-of" id="bead-of"></span>
+    </button>
+    <p class="rounds" id="rounds"></p>
+    <button type="button" class="btn outline" id="bead-reset">إعادة العدّ من الصفر</button>
+  </main>
 </section>
 
 <script src="data.js"></script>

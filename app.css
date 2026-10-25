@@ -137,3 +137,21 @@ svg { width: 30px; height: 30px; fill: none; stroke: currentColor; stroke-width:
 .empty { margin: 24px 8px; font-size: 21px; line-height: 1.9; text-align: center; color: var(--muted); }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .star.on { background: #2A4A40; } }
 :root[data-theme="dark"] .star.on { background: #2A4A40; }
+/* المسبحة */
+#misbaha { height: 100dvh; }
+.icon-btn.ghost { background: transparent; }
+.misbaha { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 16px; padding: 16px 16px max(20px, env(safe-area-inset-bottom)); width: 100%; max-width: 600px; margin: 0 auto; }
+.phrases, .targets { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+.phrases button, .targets button { border: 1px solid var(--gold); background: var(--card); color: var(--ink); border-radius: 22px; padding: 10px 14px; font: 700 17px 'Tajawal', sans-serif; cursor: pointer; }
+.phrases button { font-family: 'Amiri', serif; font-size: 20px; font-weight: 400; }
+.phrases button.on, .targets button.on { background: var(--green); color: #fff; border-color: var(--green); }
+.bead { flex: none; width: min(72vw, 320px); aspect-ratio: 1; border-radius: 50%; border: 6px solid var(--gold); background: radial-gradient(circle at 35% 30%, #1F6B54, var(--green) 70%); color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; cursor: pointer; box-shadow: 0 10px 30px rgba(15, 76, 58, .35); touch-action: manipulation; -webkit-user-select: none; user-select: none; }
+.bead:active { transform: scale(.97); }
+.bead.flash { background: var(--gold); color: var(--ink); }
+.bead-count { font: 700 clamp(64px, 22vw, 104px) 'Tajawal', sans-serif; line-height: 1; }
+.bead-of { font-family: 'Amiri', serif; font-size: 22px; color: #F1E6C8; }
+.bead.flash .bead-of { color: var(--ink); }
+.rounds { margin: 0; min-height: 30px; font-size: 21px; font-weight: 700; color: var(--green); }
+.misbaha .btn { max-width: 360px; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .rounds { color: #D9C48F; } }
+:root[data-theme="dark"] .rounds { color: #D9C48F; }

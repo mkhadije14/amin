@@ -223,6 +223,49 @@
   $('prev').addEventListener('click', function () { if (page > 0) { page--; showPage(); } });
   $('zoom').addEventListener('click', function () { $('viewer').classList.toggle('zoomed'); });
 
+  // المسبحة
+  var PHRASES = ['سُبْحَانَ اللَّهِ', 'الْحَمْدُ لِلَّهِ', 'اللَّهُ أَكْبَرُ', 'لَا إِلَهَ إِلَّا اللَّهُ', 'أَسْتَغْفِرُ اللَّهَ', 'اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ'];
+  var TARGETS = [33, 99, 100, 0];
+  var tas = load('misbaha', { phrase: 0, target: 33, count: 0, rounds: 0 });
+  function saveTas() { save('misbaha', tas); }
+  function chooser(boxId, values, label, current, onPick) {
+    var box = $(boxId);
+    box.textContent = '';
+    values.forEach(function (v, i) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.textContent = label(v);
+      b.classList.toggle('on', current() === (boxId === 'phrases' ? i : v));
+      b.addEventListener('click', function () { onPick(boxId === 'phrases' ? i : v); renderTas(); });
+      box.appendChild(b);
+    });
+  }
+  function renderTas() {
+    chooser('phrases', PHRASES, function (v) { return v; }, function () { return tas.phrase; },
+      function (i) { if (i !== tas.phrase) { tas.phrase = i; tas.count = 0; tas.rounds = 0; saveTas(); } });
+    chooser('targets', TARGETS, function (v) { return v ? String(v) : 'بلا حد'; }, function () { return tas.target; },
+      function (v) { tas.target = v; tas.count = 0; tas.rounds = 0; saveTas(); });
+    $('bead-count').textContent = tas.count;
+    $('bead-of').textContent = tas.target ? 'من ' + tas.target : PHRASES[tas.phrase];
+    $('rounds').textContent = tas.rounds ? 'أتممت ' + tas.rounds + (tas.rounds === 1 ? ' مرة' : ' مرات') : '';
+    $('bead').setAttribute('aria-label', PHRASES[tas.phrase] + '، العدد ' + tas.count);
+  }
+  $('bead').addEventListener('click', function () {
+    tas.count++;
+    if (tas.target && tas.count >= tas.target) {
+      tas.rounds++;
+      tas.count = 0;
+      if (navigator.vibrate) navigator.vibrate([150, 80, 150]);
+      $('bead').classList.add('flash');
+      setTimeout(function () { $('bead').classList.remove('flash'); }, 600);
+    } else if (navigator.vibrate) {
+      navigator.vibrate(25);
+    }
+    saveTas();
+    renderTas();
+  });
+  $('bead-reset').addEventListener('click', function () { tas.count = 0; tas.rounds = 0; saveTas(); renderTas(); });
+
   // التنقل
   function route() {
     var h = location.hash.replace('#', '');
@@ -231,6 +274,9 @@
     if (LISTS[h] || h === 'fav') {
       renderList(h);
       $('list').hidden = false;
+    } else if (h === 'misbaha') {
+      renderTas();
+      $('misbaha').hidden = false;
     } else if (h === 'khassa') {
       showPage();
       $('khassa').hidden = false;
