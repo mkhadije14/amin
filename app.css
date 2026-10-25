@@ -155,3 +155,4 @@ svg { width: 30px; height: 30px; fill: none; stroke: currentColor; stroke-width:
 .misbaha .btn { max-width: 360px; }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .rounds { color: #D9C48F; } }
 :root[data-theme="dark"] .rounds { color: #D9C48F; }
+.misbaha.center { justify-content: center; gap: 28px; }

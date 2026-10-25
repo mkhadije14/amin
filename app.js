@@ -223,48 +223,24 @@
   $('prev').addEventListener('click', function () { if (page > 0) { page--; showPage(); } });
   $('zoom').addEventListener('click', function () { $('viewer').classList.toggle('zoomed'); });
 
-  // المسبحة
-  var PHRASES = ['سُبْحَانَ اللَّهِ', 'الْحَمْدُ لِلَّهِ', 'اللَّهُ أَكْبَرُ', 'لَا إِلَهَ إِلَّا اللَّهُ', 'أَسْتَغْفِرُ اللَّهَ', 'اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ'];
-  var TARGETS = [33, 99, 100, 0];
-  var tas = load('misbaha', { phrase: 0, target: 33, count: 0, rounds: 0 });
-  function saveTas() { save('misbaha', tas); }
-  function chooser(boxId, values, label, current, onPick) {
-    var box = $(boxId);
-    box.textContent = '';
-    values.forEach(function (v, i) {
-      var b = document.createElement('button');
-      b.type = 'button';
-      b.textContent = label(v);
-      b.classList.toggle('on', current() === (boxId === 'phrases' ? i : v));
-      b.addEventListener('click', function () { onPick(boxId === 'phrases' ? i : v); renderTas(); });
-      box.appendChild(b);
-    });
-  }
+  // المسبحة: عدّاد بسيط بلا حد يحتفظ بآخر عدد
+  var beads = load('beads', 0);
   function renderTas() {
-    chooser('phrases', PHRASES, function (v) { return v; }, function () { return tas.phrase; },
-      function (i) { if (i !== tas.phrase) { tas.phrase = i; tas.count = 0; tas.rounds = 0; saveTas(); } });
-    chooser('targets', TARGETS, function (v) { return v ? String(v) : 'بلا حد'; }, function () { return tas.target; },
-      function (v) { tas.target = v; tas.count = 0; tas.rounds = 0; saveTas(); });
-    $('bead-count').textContent = tas.count;
-    $('bead-of').textContent = tas.target ? 'من ' + tas.target : PHRASES[tas.phrase];
-    $('rounds').textContent = tas.rounds ? 'أتممت ' + tas.rounds + (tas.rounds === 1 ? ' مرة' : ' مرات') : '';
-    $('bead').setAttribute('aria-label', PHRASES[tas.phrase] + '، العدد ' + tas.count);
+    $('bead-count').textContent = beads;
+    $('bead').setAttribute('aria-label', 'المسبحة، العدد ' + beads);
   }
   $('bead').addEventListener('click', function () {
-    tas.count++;
-    if (tas.target && tas.count >= tas.target) {
-      tas.rounds++;
-      tas.count = 0;
-      if (navigator.vibrate) navigator.vibrate([150, 80, 150]);
-      $('bead').classList.add('flash');
-      setTimeout(function () { $('bead').classList.remove('flash'); }, 600);
-    } else if (navigator.vibrate) {
-      navigator.vibrate(25);
-    }
-    saveTas();
+    beads++;
+    if (navigator.vibrate) navigator.vibrate(beads % 100 === 0 ? [150, 80, 150] : 25);
+    save('beads', beads);
     renderTas();
   });
-  $('bead-reset').addEventListener('click', function () { tas.count = 0; tas.rounds = 0; saveTas(); renderTas(); });
+  $('bead-reset').addEventListener('click', function () {
+    if (beads && !confirm('هل تريد إعادة العدّ إلى الصفر؟')) return;
+    beads = 0;
+    save('beads', beads);
+    renderTas();
+  });
 
   // التنقل
   function route() {
