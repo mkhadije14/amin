@@ -1,5 +1,5 @@
 // Change VERSION on every update so the phone downloads the new files.
-var VERSION = 'amin-v9';
+var VERSION = 'amin-v10';
 var FILES = [
   './', 'index.html', 'app.css', 'app.js', 'data.js', 'manifest.webmanifest',
   'img/pere.jpg', 'icons/icon-192.png', 'icons/icon-512.png', 'icons/maskable-512.png', 'icons/apple-touch-icon.png',

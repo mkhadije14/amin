@@ -156,3 +156,6 @@ svg { width: 30px; height: 30px; fill: none; stroke: currentColor; stroke-width:
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .rounds { color: #D9C48F; } }
 :root[data-theme="dark"] .rounds { color: #D9C48F; }
 .misbaha.center { justify-content: center; gap: 28px; }
+.ask { border: 3px solid var(--gold); border-radius: 22px; padding: 26px 20px 20px; width: min(88vw, 420px); background: var(--card); color: var(--ink); text-align: center; }
+.ask::backdrop { background: rgba(10, 30, 24, .55); }
+.ask p { margin: 0 0 22px; font-size: 23px; font-weight: 700; line-height: 1.6; }

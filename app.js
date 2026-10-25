@@ -235,12 +235,16 @@
     save('beads', beads);
     renderTas();
   });
-  $('bead-reset').addEventListener('click', function () {
-    if (beads && !confirm('هل تريد إعادة العدّ إلى الصفر؟')) return;
+  // نافذة تأكيد بأسلوب التطبيق بدل نافذة المتصفح
+  var ask = $('reset-ask');
+  $('bead-reset').addEventListener('click', function () { if (beads) ask.showModal(); });
+  $('reset-yes').addEventListener('click', function () {
     beads = 0;
     save('beads', beads);
     renderTas();
+    ask.close();
   });
+  $('reset-no').addEventListener('click', function () { ask.close(); });
 
   // التنقل
   function route() {
